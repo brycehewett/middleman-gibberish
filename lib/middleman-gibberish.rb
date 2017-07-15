@@ -123,134 +123,26 @@ module ::Middleman
   # TODO extract this so as to be used from the CLI and tests.
   #
     def script_for(glob, path, encrypted)
-      libs = %w( jquery.js jquery.cookie.js gibberish.js )
-      cdn = 'http://ahoward.github.io/middleman-gibberish/assets/'
-
-      scripts =
-        libs.map do |lib|
-          script = File.join(source_dir, 'javascripts', lib)
-
-          #if test(?s, script)
-          if false
-            javascript_include_tag(lib)
-          else
-            src = cdn + lib
-
-            log(:warn, "using cdn hosted #{ lib.inspect } @ #{ src.inspect }")
-            log(:warn, "- add source/javascripts/#{ lib } to shut this up - a symlink link will do")
-
-            "<script src='%s' type='text/javascript'></script>" % src
-          end
-        end
-
       template =
         <<-__
           <html>
             <head>
-              <style>
-                .gibberish {
-                  margin: auto;
-                  color: #999;
-                  text-align: center;
-                }
-
-                .gibberish-instructions,
-                .gibberish-password,
-                .gibberish-message
-                {
-                  margin-bottom: 1em;
-                }
-
-                .gibberish-password {
-                  border: 1px solid #ccc;
-                }
-
-                .gibberish-message {
-                  margin: auto;
-                  color: #633;
-                }
-              </style>
+             <link href="/assets/styles/site.css" rel="stylesheet">
+             <script src="/assets/javascript/bundle.js" async="true"></script>
             </head>
-
-            <body style='width:100%;'>
-              <br>
-              <br>
-              <br>
+            <body>
               <div class='gibberish'>
-
-                <div class='gibberish-instructions'>
-                  enter password and press &lt;enter&gt;
-                </div>
-
                 <input id='gibberish-password' name='gibberish-password' type='password' class='gibberish-password'/>
 
                 <div class='gibberish-message'>
                 </div>
-
               </div>
             </body>
           </html>
 
-
-          #{ scripts.join("\n") }
-
           <script>
-            var encrypted = #{ encrypted.to_json };
-            var cookie = #{ glob.to_json };
-            var options = {path: "/", expires: 1};
-
-            jQuery(function(){
-              var password = jQuery('.gibberish-password');
-              var message  = jQuery('.gibberish-message');
-
-              password.focus();
-              message.html('');
-
-              var decrypt = function(_password){
-                if(_password){
-                  try{
-                    var decrypted = GibberishAES.dec(encrypted, _password);
-                    document.write(decrypted);
-
-                    try{
-                      jQuery.cookie(cookie, _password, options);
-                    } catch(e) {
-                    };
-
-                    return true;
-                  } catch(e) {
-                    try{
-                      jQuery.removeCookie(cookie, options);
-                    } catch(e) {
-                    };
-
-                    return false;
-                  };
-                }
-
-                return false;
-              };
-
-              password.keyup(function(e){
-                var code = e.which;
-                e.preventDefault();
-
-                if(code==13){
-                  var _password = password.val();
-                  if(!decrypt(_password)){
-                    message.html("sorry, wrong password - try again.");
-                  }
-                } else {
-                  message.html("");
-                }
-
-                return(false);
-              });
-
-
-              var _password = jQuery.cookie(cookie);
-              decrypt(_password);
-            });
+            window.encrypted = #{ encrypted.to_json };
+            window.cookie = #{ glob.to_json };
           </script>
         __
 
