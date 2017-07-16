@@ -125,16 +125,27 @@ module ::Middleman
     def script_for(glob, path, encrypted)
       template =
         <<-__
+          <!DOCTYPE html>
           <html>
             <head>
-             <link href="/assets/styles/site.css" rel="stylesheet">
-             <script src="/assets/javascript/bundle.js" async="true"></script>
+              <title>UI / UX designer | Bryce Hewett</title>
+              <link href="/assets/styles/site.css" rel="stylesheet">
+              <script src="/assets/javascript/bundle.js"></script>
             </head>
-            <body>
-              <div class='gibberish'>
-                <input id='gibberish-password' name='gibberish-password' type='password' class='gibberish-password'/>
-
-                <div class='gibberish-message'>
+            <body class="password-page">
+              <nav>
+                <div class="container">
+                  <a href="/"" class="logo">
+                    <img src="/assets/images/logo.svg"/>
+                  </a>
+                  <a class="back-link" href="/"><i class="icon ion-android-arrow-back"></i> Back to Home Page</a>
+              </nav>
+              <h1>Please enter the password to view this project.</h1>
+              <div class="password-wrapper">
+                <div class="form-group">
+                  <label for="password" class="hidden">Password</label>
+                  <input name="password" placeholder="Password" type="password" class="password-input form-control"/>
+                  <button class="btn btn-primary password-submit">Submit</button>
                 </div>
               </div>
             </body>
