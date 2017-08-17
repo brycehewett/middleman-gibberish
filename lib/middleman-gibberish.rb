@@ -134,11 +134,9 @@ module ::Middleman
             </head>
             <body class="password-page">
               <nav>
-                <div class="container">
-                  <a href="/"" class="logo">
-                    <img src="/assets/images/logo.svg"/>
-                  </a>
-                  <a class="back-link" href="/"><i class="icon ion-android-arrow-back"></i> Back to Home Page</a>
+                <a href="/"" class="logo">
+                  <img src="/assets/images/logo.svg"/>
+                </a>
               </nav>
               <h1>Please enter the password to view this project.</h1>
               <div class="password-wrapper">
@@ -146,6 +144,7 @@ module ::Middleman
                   <label for="password" class="hidden">Password</label>
                   <input name="password" placeholder="Password" type="password" class="password-input form-control"/>
                   <button class="btn btn-primary password-submit">Submit</button>
+                  <a class="back-link" href="/"><i class="icon ion-android-arrow-back"></i> Back to Home Page</a>
                 </div>
               </div>
             </body>
@@ -153,7 +152,6 @@ module ::Middleman
 
           <script>
             window.encrypted = #{ encrypted.to_json };
-            window.cookie = #{ glob.to_json };
           </script>
         __
 
